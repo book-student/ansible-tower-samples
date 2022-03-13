@@ -2,7 +2,9 @@
 - name: Tower API
   hosts: localhost
   become: false
+  vars_files: api.yml
   vars:
+    tower_host: "10.100.12.150"
     tower_job: "Demo%20Job%20Template"
 
   tasks:
