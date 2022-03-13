@@ -3,5 +3,5 @@
   tasks:
     - name: Hello Message
       debug:
-        msg: "Hello World! Desplegando version {{ deployment_version }}"
+        msg: "Hello World! Desplegando version {{ deployment_version2 }}"
 
