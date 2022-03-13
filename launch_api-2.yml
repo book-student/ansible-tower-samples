@@ -1,0 +1,32 @@
+---
+- name: Tower API
+  hosts: localhost
+  become: false
+  vars_files: api.yml
+  vars:
+    tower_host: "10.100.12.150"
+    tower_job: "Demo%20Job%20Template"
+
+  tasks:
+    - name: get token
+      uri:
+        url: "http://{{ tower_host }}/api/v2/users/1/personal_tokens/"
+        method: POST
+        validate_certs: no
+        return_content: yes
+        user: "{{ tower_user }}"
+        password: "{{ tower_pass }}"
+        force_basic_auth: yes
+        status_code: 201
+      register: response
+    - name: Launch job
+      uri:
+        url: "http://{{ tower_host }}/api/v2/job_templates/{{ tower_job }}/launch/"
+        method: POST
+        validate_certs: no
+        return_content: yes
+        headers:
+          Authorization: "Bearer {{ response['json']['token'] }}"
+          Content-Type: "application/json"
+        force_basic_auth: yes
+        status_code: 201
